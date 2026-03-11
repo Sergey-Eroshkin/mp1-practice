@@ -1,6 +1,8 @@
 #include <iostream>
 #include <cmath>
+#include <vector>
 using namespace std;
+
 
 struct Vector {
 	double* x;
@@ -10,8 +12,10 @@ struct Vector {
 	~Vector();
 	double len() const;
 	double operator *(const Vector&);
+	Vector operator *(double);
 	Vector operator +(const Vector&);
 	Vector operator -(const Vector&);
+	void operator =(const Vector&);
 };
 
 Vector::Vector(int n) {
@@ -42,6 +46,11 @@ double Vector::operator *(const Vector& v) {
 	return s;
 }
 
+Vector Vector::operator *(double a) {
+	for (int i = 0; i < n; i++) x[i] *= a;
+	return *this;
+}
+
 Vector Vector::operator +(const Vector& v) {
 	if (n != v.n) throw "Error";
 	Vector v1(n);
@@ -56,6 +65,22 @@ Vector Vector::operator -(const Vector& v) {
 	return v1;
 }
 
+void Vector::operator =(const Vector& v) {
+	if (n != v.n) throw "Error";
+	for (int i = 0; i < n; i++) x[i] = v.x[i];
+}
+
+
+vector<bool> was;
+void MethodGaussJordan(vector<Vector>& M, int m) {
+	was.resize();
+	for (int i = 0; i < m; i++) {
+		int j = i;
+		while (M[j].x[i] == 0 && j < m) j++;
+		if (j == m) continue;
+
+	}
+}
 
 int main() {
 	int n; cin >> n;
@@ -67,7 +92,8 @@ int main() {
 		cin >> v1.x[i];
 	}
 	cout << v * v1 << endl;
-	Vector v2(v + v1);
+	Vector v2(n);
+	v2 = v + v1 * 5;
 	for (int i = 0; i < n; i++) {
 		cout << v2.x[i] << " ";
 	}
